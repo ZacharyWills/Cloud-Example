@@ -13,7 +13,7 @@ provider "aws" {
 
 resource "aws_vpc" "cloud_vpc" {
   # This is a large vpc, 256 x 256 IPs available
-   cidr_block = "10.0.0.0/16"
+   cidr_block = "100.0.0.0/16"
    enable_dns_support = true
    enable_dns_hostnames = true
    tags = {
