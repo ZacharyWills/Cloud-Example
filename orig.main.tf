@@ -226,7 +226,7 @@ resource "aws_instance" "head_node" {
   depends_on = [aws_internet_gateway.gw]
   key_name = var.key_name
   iam_instance_profile = aws_iam_instance_profile.example_iam_instance_profile.name
-  user_data = data.template_file.init_instance.rendered
+  user_data = templatefile("script.tftpl", { request_id = "REQ0001234", name = "Name" })
   associate_public_ip_address = true
   subnet_id = aws_subnet.main.id
   vpc_security_group_ids = [
@@ -262,18 +262,4 @@ resource "aws_efs_mount_target" "mount_target_main_efs" {
     subnet_id = aws_subnet.main.id
     security_groups = [aws_security_group.efs_sg.id]
     file_system_id = aws_efs_file_system.main_efs.id
-}
-
-data "template_file" "init_instance" {
-   template = file("./init_template.tpl")
-   vars = {
-       efs_name = aws_efs_file_system.main_efs.dns_name
-       ami_name = "${var.name_tag} AMI"
-       aws_region = var.preferred_region
-       project = var.project_tag
-       instance_id = ""
-   }
-   
-   depends_on = [aws_efs_file_system.main_efs,
-                 aws_efs_mount_target.mount_target_main_efs]
 }
