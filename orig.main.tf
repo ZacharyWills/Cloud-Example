@@ -186,7 +186,7 @@ resource "aws_network_interface" "efa_network_adapter" {
   count = data.aws_ec2_instance_type.head_node.efa_supported == true ? 1 : 0
   subnet_id   = aws_subnet.main.id
   description = "The Elastic Fabric Adapter to attach to instance if supported"
-  security_groups = [aws_security_group.base_sg.id,
+  security_groups = [aws_security_group.default_sg.id,
                      aws_security_group.ssh_ingress.id,
                      aws_security_group.efs_sg.id]
   
