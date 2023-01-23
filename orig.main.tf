@@ -230,7 +230,7 @@ resource "aws_instance" "head_node" {
   associate_public_ip_address = true
   subnet_id = aws_subnet.main.id
   vpc_security_group_ids = [
-    aws_security_group.base_sg.id,
+    aws_security_group.default_sg.id,
     aws_security_group.ssh_ingress.id,
     aws_security_group.efs_sg.id
   ]
