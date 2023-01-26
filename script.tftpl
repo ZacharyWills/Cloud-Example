@@ -3,3 +3,13 @@ sudo mkdir ${request_id}
 cd ${request_id}
 sudo touch ${name}.txt
 
+sudo apt-get update
+
+sudo apt-get install s3fs
+sudo s3fs \
+    -o iam_role="auto" \
+    -o url="https://s3-${aws_region}.amazonaws.com" \
+    -o umask=000 \
+    -o allow_other \
+    ${bucket_name} /mnt
+
