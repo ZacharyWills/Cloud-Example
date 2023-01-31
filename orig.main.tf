@@ -195,7 +195,7 @@ resource "aws_instance" "head_node" {
   depends_on = [aws_internet_gateway.gw]
   key_name = var.key_name
   iam_instance_profile = aws_iam_instance_profile.example_iam_instance_profile.name
-  user_data = templatefile("script.tftpl", { request_id = "REQ0001234", name = "Name", aws_region = "var.aws_region" })
+  user_data = templatefile("script.tftpl", { project_tag = "var.project_tag", name_tag = "var.name_tag", aws_region = "var.aws_region", container_name = "var.container_name", ngen_catchment_file = "var.ngen_catchment_file", ngen_nexus_file = "var.ngen_nexus_file", ngen_realization_file = "var.ngen_realization_file", bucket_name = "var.bucket_name" })
   associate_public_ip_address = true
   subnet_id = aws_subnet.main.id
   vpc_security_group_ids = [

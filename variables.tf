@@ -47,8 +47,38 @@ variable "key_name" {
   #default     = "terraform-key.pem"
 }
 
+variable "container_name" {
+  description = "The name of the conatinerized model to run"
+  type        = string
+  default     = "zwills/dmod_ngen_slim"
+}
+
+
+variable "ngen_catchment_file" {
+  description = "The path of the catchment file; examples in the ngen repo"
+  type        = string
+  #default     = "/mnt/ngen/ngen/data/catchment_data.geojson"
+}
+
+variable "ngen_nexus_file" {
+  description = "The path of the nexus file; examples in the ngen repo"
+  type        = string
+  #default     = "/mnt/ngen/ngen/data/nexus_data.geojson"
+}
+
+variable "ngen_realization_file" {
+  description = "The path of the ngen realization file; examples in the ngen repo"
+  type        = string
+  #default     = "/mnt/ngen/ngen/data/test_bmi_multi_realization_config.json"
+}
+
 variable "allowed_ssh_cidr" {
   description = "Public IP address/range allowed for SSH access"
+  type = string
+}
+
+variable "bucket_name" {
+  description = "Bucket Name for AWS bucket to mount for data"
   type = string
 }
 
