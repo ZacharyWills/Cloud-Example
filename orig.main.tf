@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = var.preferred_region
+  region  = var.aws_region
 }
 
 resource "aws_vpc" "cloud_vpc" {
@@ -139,44 +139,13 @@ resource "aws_iam_instance_profile" "example_iam_instance_profile" {
 }
 
 
-data "aws_ami" "centos_7" {
-  owners = ["125523088429"]   # CentOS "CentOS 7.9.2009 x86_64"
+data "aws_ami" "amazon_linux_2" {
   most_recent = true
+  owners      = ["amazon"]
 
   filter {
-    name = "name"
-    values = ["CentOS 7.*x86_64"]
-  }
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
-
-data "aws_ami" "centos_7_aws" {
-  owners = ["679593333241"]   # AWS
-  most_recent = true
-
-  filter {
-    name = "name"
-    values = ["CentOS Linux 7 x86_64 HVM EBS ENA*"]
-  }
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-ebs"]
   }
 }
 
@@ -215,7 +184,7 @@ data "aws_ec2_instance_type" "head_node" {
 resource "aws_instance" "head_node" {
   # Base CentOS 7 AMI, can use either AWS's marketplace, or direct from CentOS
   # Choosing direct from CentOS as it is more recent
-  ami = data.aws_ami.centos_7.id
+  ami = data.aws_ami.amazon_linux_2.id
   instance_type = var.instance_type
   cpu_core_count = data.aws_ec2_instance_type.head_node.default_cores
   cpu_threads_per_core = 1
@@ -226,7 +195,7 @@ resource "aws_instance" "head_node" {
   depends_on = [aws_internet_gateway.gw]
   key_name = var.key_name
   iam_instance_profile = aws_iam_instance_profile.example_iam_instance_profile.name
-  user_data = templatefile("script.tftpl", { request_id = "REQ0001234", name = "Name" })
+  user_data = templatefile("script.tftpl", { request_id = "REQ0001234", name = "Name", aws_region = "var.aws_region" })
   associate_public_ip_address = true
   subnet_id = aws_subnet.main.id
   vpc_security_group_ids = [

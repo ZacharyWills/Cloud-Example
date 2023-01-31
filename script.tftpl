@@ -3,13 +3,20 @@ sudo mkdir ${request_id}
 cd ${request_id}
 sudo touch ${name}.txt
 
-sudo apt-get update
+sudo dnf -y update
+sudo dnf -y install docker
+sudo usermod -a -G docker ec2-user
+id ec2-user
+sudo systemctl start docker.service
 
 sudo apt-get install s3fs
 sudo s3fs \
     -o iam_role="auto" \
-    -o url="https://s3-${aws_region}.amazonaws.com" \
+    -o url="https://s3-${var.aws_region}.amazonaws.com" \
     -o umask=000 \
     -o allow_other \
     ${bucket_name} /mnt
+
+sudo docker pull zwills/dmod_ngen_slim
+
 

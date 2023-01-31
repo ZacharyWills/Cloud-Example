@@ -1,4 +1,4 @@
-variable "preferred_region" {
+variable "aws_region" {
   description = "Preferred region in which to launch EC2 instances. Defaults to us-east-1"
   type        = string
   default     = "us-east-1"
