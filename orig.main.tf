@@ -25,7 +25,7 @@ resource "aws_vpc" "cloud_vpc" {
 resource "aws_subnet" "main" {
   vpc_id   = aws_vpc.cloud_vpc.id
   # This subnet will allow 256 IPs
-  cidr_block = "100.0.0.0/24"
+  cidr_block = "100.1.0.0/24"
   availability_zone = var.availability_zone
    tags = {
       Name = "${var.name_tag} Subnet"
